@@ -1,0 +1,6 @@
+{
+  "name": "bandits-interactive-docs",
+  "private": true,
+  "type": "module",
+  "description": "ESM marker for Node-side sanity checks; browsers ignore this file."
+}

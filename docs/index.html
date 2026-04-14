@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bandits: The Movie</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="bg-slate-50 text-slate-900">
+    <header class="border-b border-slate-200 bg-white">
+      <div class="mx-auto max-w-5xl px-6 py-5">
+        <h1 class="text-3xl font-bold tracking-tight">Bandits: the movie</h1>
+        <p class="mt-1 text-slate-600">
+          Two political ads. Which one gets the click? Watch three algorithms figure it out.
+        </p>
+      </div>
+    </header>
+
+    <section class="border-b border-slate-200 bg-indigo-50">
+      <div class="mx-auto max-w-5xl px-6 py-5">
+        <h2 class="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-500">
+          The two ads
+        </h2>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div
+            class="flex items-center gap-4 rounded-lg border border-indigo-200 bg-white p-4 shadow-sm"
+          >
+            <div
+              class="flex h-20 w-20 shrink-0 items-center justify-center rounded-md bg-indigo-600 text-white"
+            >
+              <span class="text-5xl font-black leading-none">$</span>
+            </div>
+            <div>
+              <div class="text-xs font-semibold uppercase tracking-wide text-indigo-700">
+                Ad A
+              </div>
+              <p class="text-base text-slate-900">
+                Lower your gas prices: our candidate will cut taxes at the pump.
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="flex items-center gap-4 rounded-lg border border-amber-200 bg-white p-4 shadow-sm"
+          >
+            <div
+              class="flex h-20 w-20 shrink-0 items-center justify-center rounded-md bg-amber-500 text-white"
+            >
+              <span class="text-5xl leading-none">&#9829;</span>
+            </div>
+            <div>
+              <div class="text-xs font-semibold uppercase tracking-wide text-amber-700">
+                Ad B
+              </div>
+              <p class="text-base text-slate-900">
+                Protect your family: our candidate will keep your community safe.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <nav class="border-b border-slate-200 bg-white">
+      <div class="mx-auto max-w-5xl px-6">
+        <div class="flex gap-6">
+          <button
+            class="tab-btn border-b-2 border-indigo-600 px-1 py-3 text-sm font-semibold text-indigo-700"
+            data-tab="movie"
+          >
+            1. Movie
+          </button>
+          <button
+            class="tab-btn border-b-2 border-transparent px-1 py-3 text-sm font-semibold text-slate-500 hover:text-slate-800"
+            data-tab="race"
+          >
+            2. Race
+          </button>
+          <button
+            class="tab-btn border-b-2 border-transparent px-1 py-3 text-sm font-semibold text-slate-500 hover:text-slate-800"
+            data-tab="summary"
+          >
+            3. Summary
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="mx-auto max-w-5xl px-6 py-8">
+      <!-- ============== MOVIE TAB ============== -->
+      <section id="tab-movie" class="tab-panel">
+        <div class="mb-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500"
+                >Algorithm</label
+              >
+              <select id="algo-select" class="mt-1 w-full rounded-md border-slate-300 text-sm">
+                <option value="epsilon-greedy">epsilon-greedy</option>
+                <option value="UCB">UCB</option>
+                <option value="Thompson">Thompson</option>
+              </select>
+            </div>
+            <div id="epsilon-wrap">
+              <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500">
+                epsilon: <span id="epsilon-val">0.10</span>
+              </label>
+              <input
+                id="epsilon-slider"
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.10"
+                class="mt-2 w-full"
+              />
+            </div>
+            <div id="c-wrap" style="display: none">
+              <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500">
+                c (UCB exploration): <span id="c-val">1.41</span>
+              </label>
+              <input
+                id="c-slider"
+                type="range"
+                min="0"
+                max="3"
+                step="0.01"
+                value="1.41"
+                class="mt-2 w-full"
+              />
+            </div>
+            <div id="alpha0-wrap" style="display: none">
+              <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500">
+                pseudocount alpha0 = beta0: <span id="alpha0-val">1</span>
+              </label>
+              <input
+                id="alpha0-slider"
+                type="range"
+                min="1"
+                max="10"
+                step="1"
+                value="1"
+                class="mt-2 w-full"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Round: <span id="t-val">0</span> / 500
+            </label>
+            <div class="mt-2 flex items-center gap-3">
+              <button
+                id="prev-btn"
+                class="rounded-md bg-slate-100 px-3 py-1.5 text-sm hover:bg-slate-200"
+              >
+                ◀ Prev
+              </button>
+              <input
+                id="t-slider"
+                type="range"
+                min="0"
+                max="500"
+                step="1"
+                value="0"
+                class="flex-1"
+              />
+              <button
+                id="next-btn"
+                class="rounded-md bg-slate-100 px-3 py-1.5 text-sm hover:bg-slate-200"
+              >
+                Next ▶
+              </button>
+              <button
+                id="play-btn"
+                class="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-indigo-700"
+              >
+                Play
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">
+              What happened this round
+            </h2>
+            <div class="mt-3 flex items-start gap-4">
+              <div
+                id="narration-icon"
+                class="flex h-16 w-16 shrink-0 items-center justify-center rounded-md bg-slate-200 text-white"
+              >
+                <span id="narration-icon-glyph" class="text-4xl font-black leading-none">?</span>
+              </div>
+              <div>
+                <p id="narration-headline" class="text-base font-semibold text-slate-900">
+                  Round 0: no data yet.
+                </p>
+                <p id="narration-detail" class="mt-1 text-sm leading-relaxed text-slate-700">
+                  Every ad looks equally promising. Press Next to run round 1.
+                </p>
+              </div>
+            </div>
+            <div class="mt-4 space-y-2 text-sm text-slate-600">
+              <div>
+                Total clicks so far: <span id="cum-clicks" class="font-semibold">0</span>
+              </div>
+              <div>
+                Regret so far: <span id="cum-regret" class="font-semibold">0.00</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">
+              Estimated click-through rate
+            </h2>
+            <canvas id="bars-values" height="120"></canvas>
+            <h2 class="mt-4 text-sm font-semibold uppercase tracking-wide text-slate-500">
+              Times each ad was shown
+            </h2>
+            <canvas id="bars-counts" height="120"></canvas>
+          </div>
+        </div>
+
+        <div class="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">
+            Running estimates over time
+          </h2>
+          <canvas id="line-values" height="80"></canvas>
+          <p class="mt-2 text-xs text-slate-500">
+            Dashed lines are the (hidden) true click rates. The algorithm only sees the solid
+            lines.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============== RACE TAB ============== -->
+      <section id="tab-race" class="tab-panel" style="display: none">
+        <div class="mb-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <p class="text-sm text-slate-700">
+            All three algorithms running on the
+            <strong>same random seed</strong>. They see the exact same coin flips for the ads
+            they pick. Watch them diverge and re-converge.
+          </p>
+          <div class="mt-4">
+            <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Round: <span id="race-t-val">0</span> / 500
+            </label>
+            <div class="mt-2 flex items-center gap-3">
+              <button
+                id="race-prev-btn"
+                class="rounded-md bg-slate-100 px-3 py-1.5 text-sm hover:bg-slate-200"
+              >
+                ◀ Prev
+              </button>
+              <input
+                id="race-t-slider"
+                type="range"
+                min="0"
+                max="500"
+                step="1"
+                value="0"
+                class="flex-1"
+              />
+              <button
+                id="race-next-btn"
+                class="rounded-md bg-slate-100 px-3 py-1.5 text-sm hover:bg-slate-200"
+              >
+                Next ▶
+              </button>
+              <button
+                id="race-play-btn"
+                class="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-indigo-700"
+              >
+                Play
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <h3 class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              epsilon-greedy
+            </h3>
+            <p id="race-eps-status" class="mt-2 text-sm text-slate-700">&nbsp;</p>
+          </div>
+          <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <h3 class="text-xs font-semibold uppercase tracking-wide text-slate-500">UCB</h3>
+            <p id="race-ucb-status" class="mt-2 text-sm text-slate-700">&nbsp;</p>
+          </div>
+          <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <h3 class="text-xs font-semibold uppercase tracking-wide text-slate-500">Thompson</h3>
+            <p id="race-thompson-status" class="mt-2 text-sm text-slate-700">&nbsp;</p>
+          </div>
+        </div>
+
+        <div class="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">
+            Cumulative regret (lower is better)
+          </h2>
+          <canvas id="race-regret" height="90"></canvas>
+        </div>
+
+        <div class="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">
+            Cumulative clicks (higher is better)
+          </h2>
+          <canvas id="race-clicks" height="90"></canvas>
+        </div>
+      </section>
+
+      <!-- ============== SUMMARY TAB ============== -->
+      <section id="tab-summary" class="tab-panel" style="display: none">
+        <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 class="text-xl font-bold">The punchline</h2>
+          <p class="mt-3 text-slate-700">
+            After 500 rounds, all three algorithms have figured out that <strong>Ad B</strong>
+            ("Protect your family") beats <strong>Ad A</strong> ("Lower your gas prices"). They
+            just differ in <em>how fast they commit</em>.
+          </p>
+
+          <div id="summary-paragraphs" class="mt-6 space-y-4 text-slate-700"></div>
+
+          <div class="mt-6">
+            <h3 class="text-sm font-semibold uppercase tracking-wide text-slate-500">
+              Final clicks won
+            </h3>
+            <canvas id="summary-clicks" height="120"></canvas>
+          </div>
+
+          <p class="mt-6 text-sm text-slate-500">
+            What differs is how fast they commit, and that's the whole lesson.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="mt-12 border-t border-slate-200 bg-white py-6">
+      <div class="mx-auto max-w-5xl px-6 text-xs text-slate-500">
+        Built for Columbia's <em>Persuasion at Scale</em> (Eunji Kim &amp; Chris Wiggins).
+        Source: <a
+          class="underline"
+          href="https://github.com/Persuasion-at-Scale/bandits-interactive"
+          >github.com/Persuasion-at-Scale/bandits-interactive</a
+        >. MIT licensed.
+      </div>
+    </footer>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
