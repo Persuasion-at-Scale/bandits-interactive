@@ -216,13 +216,23 @@ function renderMovie() {
   lineValues.update();
 }
 
-$('algo-select').addEventListener('change', (e) => {
-  movieState.algo = e.target.value;
+function updateAlgoButtons() {
+  document.querySelectorAll('.algo-btn').forEach((btn) => {
+    if (btn.dataset.algo === movieState.algo) btn.classList.add('active');
+    else btn.classList.remove('active');
+  });
   $('epsilon-wrap').style.display = movieState.algo === 'epsilon-greedy' ? 'block' : 'none';
   $('c-wrap').style.display = movieState.algo === 'UCB' ? 'block' : 'none';
   $('alpha0-wrap').style.display = movieState.algo === 'Thompson' ? 'block' : 'none';
-  recomputeMovie();
+}
+document.querySelectorAll('.algo-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    movieState.algo = btn.dataset.algo;
+    updateAlgoButtons();
+    recomputeMovie();
+  });
 });
+updateAlgoButtons();
 $('epsilon-slider').addEventListener('input', (e) => {
   movieState.epsilon = parseFloat(e.target.value);
   $('epsilon-val').textContent = movieState.epsilon.toFixed(2);

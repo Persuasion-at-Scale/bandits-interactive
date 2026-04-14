@@ -92,17 +92,40 @@
       <!-- ============== MOVIE TAB ============== -->
       <section id="tab-movie" class="tab-panel">
         <div class="mb-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-          <div class="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div>
-              <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500"
-                >Algorithm</label
+          <div class="mb-4">
+            <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Algorithm
+            </label>
+            <div
+              id="algo-buttons"
+              class="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-3"
+              role="tablist"
+            >
+              <button
+                type="button"
+                data-algo="epsilon-greedy"
+                class="algo-btn rounded-md border px-4 py-3 text-sm font-semibold transition"
               >
-              <select id="algo-select" class="mt-1 w-full rounded-md border-slate-300 text-sm">
-                <option value="epsilon-greedy">epsilon-greedy</option>
-                <option value="UCB">UCB</option>
-                <option value="Thompson">Thompson</option>
-              </select>
+                epsilon-greedy
+              </button>
+              <button
+                type="button"
+                data-algo="UCB"
+                class="algo-btn rounded-md border px-4 py-3 text-sm font-semibold transition"
+              >
+                UCB
+              </button>
+              <button
+                type="button"
+                data-algo="Thompson"
+                class="algo-btn rounded-md border px-4 py-3 text-sm font-semibold transition"
+              >
+                Thompson
+              </button>
             </div>
+          </div>
+
+          <div class="mb-4">
             <div id="epsilon-wrap">
               <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500">
                 epsilon: <span id="epsilon-val">0.10</span>
