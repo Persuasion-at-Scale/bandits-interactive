@@ -140,7 +140,6 @@ function recomputeMovie() {
 
 function setNarrationIcon(arm) {
   const el = $('narration-icon');
-  // Remove any old bg-* class we added
   el.classList.remove('bg-slate-200', 'bg-indigo-600', 'bg-amber-500');
   if (arm == null) {
     el.classList.add('bg-slate-200');
@@ -149,6 +148,30 @@ function setNarrationIcon(arm) {
   }
   el.classList.add(AD_BG[arm]);
   $('narration-icon-glyph').textContent = AD_GLYPHS[arm];
+}
+
+function setNarrationOutcome(reward) {
+  const el = $('narration-outcome');
+  const glyph = $('narration-outcome-glyph');
+  el.classList.remove(
+    'bg-slate-100',
+    'bg-emerald-500',
+    'bg-red-500',
+    'text-slate-300',
+    'text-white'
+  );
+  if (reward == null) {
+    el.classList.add('bg-slate-100', 'text-slate-300');
+    glyph.innerHTML = '&nbsp;';
+    return;
+  }
+  if (reward === 1) {
+    el.classList.add('bg-emerald-500', 'text-white');
+    glyph.textContent = '\u2713'; // check mark
+  } else {
+    el.classList.add('bg-red-500', 'text-white');
+    glyph.textContent = '\u2717'; // ballot x
+  }
 }
 
 function renderMovie() {
@@ -160,6 +183,7 @@ function renderMovie() {
   $('narration-headline').textContent = f.headline;
   $('narration-detail').textContent = f.detail;
   setNarrationIcon(f.arm);
+  setNarrationOutcome(f.reward);
   $('cum-clicks').textContent = f.cumReward;
   $('cum-regret').textContent = f.cumRegret.toFixed(2);
 

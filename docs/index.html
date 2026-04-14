@@ -189,11 +189,23 @@
               What happened this round
             </h2>
             <div class="mt-3 flex items-start gap-4">
-              <div
-                id="narration-icon"
-                class="flex h-16 w-16 shrink-0 items-center justify-center rounded-md bg-slate-200 text-white"
-              >
-                <span id="narration-icon-glyph" class="text-4xl font-black leading-none">?</span>
+              <div class="flex shrink-0 items-center gap-2">
+                <div
+                  id="narration-icon"
+                  class="flex h-16 w-16 items-center justify-center rounded-md bg-slate-200 text-white"
+                >
+                  <span id="narration-icon-glyph" class="text-4xl font-black leading-none"
+                    >?</span
+                  >
+                </div>
+                <div
+                  id="narration-outcome"
+                  class="flex h-16 w-16 items-center justify-center rounded-md bg-slate-100 text-slate-300"
+                >
+                  <span id="narration-outcome-glyph" class="text-4xl font-black leading-none"
+                    >&nbsp;</span
+                  >
+                </div>
               </div>
               <div>
                 <p id="narration-headline" class="text-base font-semibold text-slate-900">
@@ -350,6 +362,9 @@
         >. MIT licensed.
       </div>
     </footer>
+
+    <!-- Tailwind CDN JIT safelist: classes added at runtime by app.js -->
+    <div class="hidden bg-emerald-500 bg-red-500 text-white text-slate-300"></div>
 
     <script type="module" src="app.js"></script>
   </body>
