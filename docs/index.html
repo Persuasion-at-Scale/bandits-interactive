@@ -84,6 +84,12 @@
           >
             3. Summary
           </button>
+          <button
+            class="tab-btn border-b-2 border-transparent px-1 py-3 text-sm font-semibold text-slate-500 hover:text-slate-800"
+            data-tab="map"
+          >
+            4. Map
+          </button>
         </div>
       </div>
     </nav>
@@ -373,6 +379,181 @@
           </p>
         </div>
       </section>
+      <!-- ============== MAP TAB ============== -->
+      <section id="tab-map" class="tab-panel" style="display: none">
+        <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 class="text-xl font-bold">The map: every method, in four cells</h2>
+          <p class="mt-2 text-sm text-slate-600">
+            Click any cell to highlight it. The course arc runs along the diagonal.
+          </p>
+
+          <div class="mt-6 grid grid-cols-3 gap-0 text-sm">
+            <!-- Header row -->
+            <div class="border border-slate-200 bg-slate-50 p-3"></div>
+            <div class="border border-slate-200 bg-slate-100 p-3 text-center font-semibold">
+              Fixed assignment
+            </div>
+            <div class="border border-slate-200 bg-slate-100 p-3 text-center font-semibold">
+              Adaptive assignment
+            </div>
+
+            <!-- Row 1: Context-free -->
+            <div class="border border-slate-200 bg-slate-100 p-3 font-semibold">
+              Context-free
+              <div class="mt-1 text-xs font-normal text-slate-500">everyone looks the same</div>
+            </div>
+            <div
+              class="map-cell cursor-pointer border border-slate-200 p-4 transition hover:shadow-md"
+              data-cell="ab"
+            >
+              <div class="text-base font-bold text-indigo-700">A/B test</div>
+              <div class="mt-1 text-xs text-slate-600">
+                Run the experiment, estimate the average effect, pick the winner.
+              </div>
+              <div class="mt-2 text-xs text-slate-400">Weeks 1-10</div>
+            </div>
+            <div
+              class="map-cell cursor-pointer border border-slate-200 p-4 transition hover:shadow-md"
+              data-cell="mab"
+            >
+              <div class="text-base font-bold text-emerald-700">Multi-armed bandit</div>
+              <div class="mt-1 text-xs text-slate-600">
+                Learn the best arm <em>for the population</em> while you go.
+              </div>
+              <div class="mt-2 flex flex-wrap gap-1">
+                <span
+                  class="inline-block rounded bg-emerald-100 px-1.5 py-0.5 text-xs text-emerald-800"
+                  >epsilon-greedy</span
+                >
+                <span
+                  class="inline-block rounded bg-emerald-100 px-1.5 py-0.5 text-xs text-emerald-800"
+                  >UCB</span
+                >
+                <span
+                  class="inline-block rounded bg-emerald-100 px-1.5 py-0.5 text-xs text-emerald-800"
+                  >Thompson</span
+                >
+              </div>
+              <div class="mt-2 text-xs text-slate-400">Monday (Apr 13)</div>
+            </div>
+
+            <!-- Row 2: Context-aware -->
+            <div class="border border-slate-200 bg-slate-100 p-3 font-semibold">
+              Context-aware
+              <div class="mt-1 text-xs font-normal text-slate-500">people differ</div>
+            </div>
+            <div
+              class="map-cell cursor-pointer border border-slate-200 p-4 transition hover:shadow-md"
+              data-cell="targeting"
+            >
+              <div class="text-base font-bold text-amber-700">Targeting (RCT + OLS)</div>
+              <div class="mt-1 text-xs text-slate-600">
+                Run the experiment, fit a regression on covariates, assign by predicted effect.
+              </div>
+              <div class="mt-2 text-xs text-slate-400">Apr 8</div>
+            </div>
+            <div
+              class="map-cell cursor-pointer border border-slate-200 p-4 transition hover:shadow-md"
+              data-cell="cb"
+            >
+              <div class="text-base font-bold text-rose-700">Contextual bandit</div>
+              <div class="mt-1 text-xs text-slate-600">
+                Learn the best arm <em>for each person</em> while you go.
+              </div>
+              <div class="mt-2 flex flex-wrap gap-1">
+                <span
+                  class="inline-block rounded bg-rose-100 px-1.5 py-0.5 text-xs text-rose-800"
+                  >LinUCB</span
+                >
+                <span
+                  class="inline-block rounded bg-rose-100 px-1.5 py-0.5 text-xs text-rose-800"
+                  >LinTS</span
+                >
+              </div>
+              <div class="mt-2 text-xs text-slate-400">Today (Apr 15)</div>
+            </div>
+          </div>
+
+          <!-- Diagonal arrow annotation -->
+          <div class="mt-4 flex items-center gap-2 text-sm text-slate-500">
+            <span class="font-semibold text-indigo-600">A/B test</span>
+            <span>&rarr;</span>
+            <span class="font-semibold text-amber-600">Targeting</span>
+            <span>/</span>
+            <span class="font-semibold text-emerald-600">MAB</span>
+            <span>&rarr;</span>
+            <span class="font-semibold text-rose-600">Contextual bandit</span>
+            <span class="ml-2 text-xs">(the course arc)</span>
+          </div>
+        </div>
+
+        <!-- Decision tree -->
+        <div class="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 class="text-xl font-bold">Which method do I use?</h2>
+          <p class="mt-2 text-sm text-slate-600">Two questions, four answers.</p>
+
+          <div class="mt-6 ml-2 space-y-1 font-mono text-sm leading-relaxed">
+            <div class="font-semibold text-slate-800">
+              Do you have per-person features (age, history, geography)?
+            </div>
+            <div class="ml-4">
+              <span class="text-slate-400">&boxvr;&boxh;</span>
+              <span class="font-semibold">No</span>
+              &rarr; Do you adapt assignments over time?
+            </div>
+            <div class="ml-10">
+              <span class="text-slate-400">&boxvr;&boxh;</span>
+              No &rarr;
+              <span
+                class="map-leaf cursor-pointer rounded bg-indigo-100 px-1.5 py-0.5 font-semibold text-indigo-800 hover:bg-indigo-200"
+                data-cell="ab"
+                >A/B test</span
+              >
+            </div>
+            <div class="ml-10">
+              <span class="text-slate-400">&boxur;&boxh;</span>
+              Yes &rarr;
+              <span
+                class="map-leaf cursor-pointer rounded bg-emerald-100 px-1.5 py-0.5 font-semibold text-emerald-800 hover:bg-emerald-200"
+                data-cell="mab"
+                >MAB</span
+              >
+              <span class="text-slate-500"
+                >(epsilon-greedy / UCB / Thompson)</span
+              >
+            </div>
+            <div class="ml-4">
+              <span class="text-slate-400">&boxur;&boxh;</span>
+              <span class="font-semibold">Yes</span>
+              &rarr; Do you adapt assignments over time?
+            </div>
+            <div class="ml-10">
+              <span class="text-slate-400">&boxvr;&boxh;</span>
+              No &rarr;
+              <span
+                class="map-leaf cursor-pointer rounded bg-amber-100 px-1.5 py-0.5 font-semibold text-amber-800 hover:bg-amber-200"
+                data-cell="targeting"
+                >Targeting</span
+              >
+              <span class="text-slate-500">(RCT + OLS)</span>
+            </div>
+            <div class="ml-10">
+              <span class="text-slate-400">&boxur;&boxh;</span>
+              Yes &rarr;
+              <span
+                class="map-leaf cursor-pointer rounded bg-rose-100 px-1.5 py-0.5 font-semibold text-rose-800 hover:bg-rose-200"
+                data-cell="cb"
+                >Contextual bandit</span
+              >
+              <span class="text-slate-500">(LinUCB / LinTS)</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="mt-4 text-sm text-slate-500">
+          Screenshot this. It's the whole semester in one picture.
+        </p>
+      </section>
     </main>
 
     <footer class="mt-12 border-t border-slate-200 bg-white py-6">
@@ -387,7 +568,7 @@
     </footer>
 
     <!-- Tailwind CDN JIT safelist: classes added at runtime by app.js -->
-    <div class="hidden bg-emerald-500 bg-red-500 text-white text-slate-300"></div>
+    <div class="hidden bg-emerald-500 bg-red-500 text-white text-slate-300 ring-2 ring-indigo-500 ring-emerald-500 ring-amber-500 ring-rose-500 ring-offset-1 bg-indigo-50 bg-emerald-50 bg-amber-50 bg-rose-50"></div>
 
     <script type="module" src="app.js"></script>
   </body>

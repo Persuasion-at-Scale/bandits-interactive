@@ -455,5 +455,48 @@ function ensureSummary() {
   summaryChart.update();
 }
 
+// ============== MAP TAB ==============
+
+const CELL_HIGHLIGHT = {
+  ab: 'ring-2 ring-indigo-500 bg-indigo-50',
+  mab: 'ring-2 ring-emerald-500 bg-emerald-50',
+  targeting: 'ring-2 ring-amber-500 bg-amber-50',
+  cb: 'ring-2 ring-rose-500 bg-rose-50',
+};
+
+function highlightMapCell(cellId) {
+  // Clear all highlights
+  document.querySelectorAll('.map-cell').forEach((el) => {
+    Object.values(CELL_HIGHLIGHT)
+      .join(' ')
+      .split(' ')
+      .forEach((cls) => el.classList.remove(cls));
+  });
+  document.querySelectorAll('.map-leaf').forEach((el) => {
+    el.classList.remove('ring-2', 'ring-offset-1');
+  });
+  if (!cellId) return;
+  // Highlight the grid cell
+  const classes = CELL_HIGHLIGHT[cellId];
+  if (classes) {
+    document.querySelectorAll(`.map-cell[data-cell="${cellId}"]`).forEach((el) => {
+      classes.split(' ').forEach((cls) => el.classList.add(cls));
+    });
+  }
+  // Highlight the decision-tree leaf
+  document.querySelectorAll(`.map-leaf[data-cell="${cellId}"]`).forEach((el) => {
+    el.classList.add('ring-2', 'ring-offset-1');
+  });
+}
+
+// Click on grid cells
+document.querySelectorAll('.map-cell').forEach((el) => {
+  el.addEventListener('click', () => highlightMapCell(el.dataset.cell));
+});
+// Click on decision-tree leaves
+document.querySelectorAll('.map-leaf').forEach((el) => {
+  el.addEventListener('click', () => highlightMapCell(el.dataset.cell));
+});
+
 // ============== BOOT ==============
 recomputeMovie();
